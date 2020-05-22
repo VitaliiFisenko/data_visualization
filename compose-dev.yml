@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  web:
+    image: "${PROJECT_IMAGE}"
+    container_name: data_visualization_web_1
+    command: bash -c "python3 manage.py migrate --noinput &&
+                      python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8008:8000"
+    volumes:
+      - data_visualization:/data_visualization/
+    restart: always
+    depends_on:
+      - db
+  db:
+    image: postgres:9.6
+    restart: always
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    environment:
+      LC_ALL: "en_US.UTF-8"
+      LC_CTYPE: "en_US.UTF-8"
+      POSTGRES_PASSWORD: "psql"
+      POSTGRES_USER: "psql"
+      POSTGRES_DB: "psql"
+
+
+volumes:
+    postgres_data:
+    data_visualization:
