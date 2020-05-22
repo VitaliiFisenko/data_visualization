@@ -9,7 +9,7 @@ services:
     ports:
       - "8008:8000"
     volumes:
-      - data_visualization:/data_visualization/
+      - ./:/ ./
     restart: always
     depends_on:
       - db
@@ -27,6 +27,7 @@ services:
       POSTGRES_PASSWORD: "psql"
       POSTGRES_USER: "psql"
       POSTGRES_DB: "psql"
+      PGDATA: "/var/lib/postgresql/data/db/"
 
 
 volumes:
