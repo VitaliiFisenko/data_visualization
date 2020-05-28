@@ -11,6 +11,8 @@ services:
     volumes:
       - ./:/ ./
     restart: always
+    environment:
+     DATA_URL: 'http://minerals-ua.info/mapviewer/geolmapeng.html'
     depends_on:
       - db
   db:
