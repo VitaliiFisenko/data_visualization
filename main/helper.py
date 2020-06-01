@@ -3,6 +3,8 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
+from main.models import DataModel
+
 
 class MapBuilder:
     def __init__(self):
@@ -14,9 +16,11 @@ class MapBuilder:
         return html
 
     def __prepare_text(self, html):
-        soup = BeautifulSoup(html, features="html.parser")
-        soup.body.div.div.decompose()
-        pane = soup.body.div.find(id='RightPane')
-        pane.find(id='basemapGallery').decompose()
-        pane.find(id='print_button').decompose()
-        return soup.html
+        if not DataModel.objects.last():
+            soup = BeautifulSoup(html, features="html.parser")
+            soup.body.div.div.decompose()
+            pane = soup.body.div.find(id='RightPane')
+            pane.find(id='basemapGallery').decompose()
+            pane.find(id='print_button').decompose()
+            DataModel.objects.create(data=soup.html)
+        return DataModel.objects.last().data
